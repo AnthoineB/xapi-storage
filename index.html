@@ -2706,7 +2706,38 @@ Plugin-specific configuration which describes where and how to locate the storag
 </span><span class="p">[]</span><span class="w">
 </span></code></pre></div>
 <p>type <code>probe_results</code> = <code>probe_result list</code></p>
+<h3 id='volume-type-definitions-volume_type'>volume_type</h3><div class="highlight"><pre class="highlight json tab-json"><code><span class="s2">"Data"</span><span class="w">
+</span><span class="s2">"CBT_Metadata"</span><span class="w">
+</span><span class="s2">"Data_and_CBT_Metadata"</span><span class="w">
+</span></code></pre></div>
+<p>type <code>volume_type</code> = <code>variant { ... }</code></p>
+<h4 id='volume-type-definitions-volume_type-constructors'>Constructors</h4>
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Data</td>
+<td>unit</td>
+<td>Normal data volume</td>
+</tr>
+<tr>
+<td>CBT_Metadata</td>
+<td>unit</td>
+<td>CBT Metadata only, data destroyed</td>
+</tr>
+<tr>
+<td>Data_and_CBT_Metadata</td>
+<td>unit</td>
+<td>Both Data and CBT Metadata</td>
+</tr>
+</tbody></table>
 <h3 id='volume-type-definitions-volume'>volume</h3><div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"cbt_enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"volume_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Data"</span><span class="p">,</span><span class="w">
   </span><span class="nl">"keys"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"keys"</span><span class="p">:</span><span class="w"> </span><span class="s2">"keys"</span><span class="w"> </span><span class="p">},</span><span class="w">
   </span><span class="nl">"uri"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"uri"</span><span class="w"> </span><span class="p">],</span><span class="w">
   </span><span class="nl">"physical_utilisation"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
@@ -2778,9 +2809,21 @@ Plugin-specific configuration which describes where and how to locate the storag
 <td>(string * string) list</td>
 <td>A list of key=value pairs which have been stored in the Volume metadata. These should not be interpreted by the Volume plugin.</td>
 </tr>
+<tr>
+<td>volume_type</td>
+<td>volume_type option</td>
+<td>The content type of this volume</td>
+</tr>
+<tr>
+<td>cbt_enabled</td>
+<td>bool option</td>
+<td>True means that the storage datapath will track changed dirty blocks while writing and will be able to provide CBT Metadata when requested</td>
+</tr>
 </tbody></table>
 <h3 id='volume-type-definitions-volumes'>volumes</h3><div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
   </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"cbt_enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"volume_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Data"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"keys"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"keys"</span><span class="p">:</span><span class="w"> </span><span class="s2">"keys"</span><span class="w"> </span><span class="p">},</span><span class="w">
     </span><span class="nl">"uri"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"uri"</span><span class="w"> </span><span class="p">],</span><span class="w">
     </span><span class="nl">"physical_utilisation"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
@@ -3639,6 +3682,8 @@ List of blocks for copying.</p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
   </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"cbt_enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"volume_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Data"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"keys"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"field_1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value_1"</span><span class="p">,</span><span class="w"> </span><span class="nl">"field_2"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value_2"</span><span class="w"> </span><span class="p">},</span><span class="w">
     </span><span class="nl">"uri"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"uri_1"</span><span class="p">,</span><span class="w"> </span><span class="s2">"uri_2"</span><span class="w"> </span><span class="p">],</span><span class="w">
     </span><span class="nl">"physical_utilisation"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
@@ -3651,6 +3696,8 @@ List of blocks for copying.</p>
     </span><span class="nl">"key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"key"</span><span class="w">
   </span><span class="p">},</span><span class="w">
   </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"cbt_enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"volume_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Data"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"keys"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"field_1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value_1"</span><span class="p">,</span><span class="w"> </span><span class="nl">"field_2"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value_2"</span><span class="w"> </span><span class="p">},</span><span class="w">
     </span><span class="nl">"uri"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"uri_1"</span><span class="p">,</span><span class="w"> </span><span class="s2">"uri_2"</span><span class="w"> </span><span class="p">],</span><span class="w">
     </span><span class="nl">"physical_utilisation"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
@@ -3684,7 +3731,7 @@ List of blocks for copying.</p>
         <span class="s">"""
         [ls sr] returns a list of volumes contained within an attached SR.
         """</span>
-        <span class="k">return</span> <span class="p">[{</span><span class="s">"key"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"uuid"</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s">"name"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"description"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"read_write"</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">"sharable"</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">"virtual_size"</span><span class="p">:</span> <span class="nb">long</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s">"physical_utilisation"</span><span class="p">:</span> <span class="nb">long</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s">"uri"</span><span class="p">:</span> <span class="p">[</span><span class="s">"string"</span><span class="p">],</span> <span class="s">"keys"</span><span class="p">:</span> <span class="p">{</span><span class="s">"string"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">}}]</span>
+        <span class="k">return</span> <span class="p">[{</span><span class="s">"key"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"uuid"</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s">"name"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"description"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"read_write"</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">"sharable"</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">"virtual_size"</span><span class="p">:</span> <span class="nb">long</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s">"physical_utilisation"</span><span class="p">:</span> <span class="nb">long</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s">"uri"</span><span class="p">:</span> <span class="p">[</span><span class="s">"string"</span><span class="p">],</span> <span class="s">"keys"</span><span class="p">:</span> <span class="p">{</span><span class="s">"string"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">},</span> <span class="s">"volume_type"</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s">"cbt_enabled"</span><span class="p">:</span> <span class="bp">None</span><span class="p">}]</span>
     <span class="c1"># ...
 </span></code></pre></div>
 <table><thead>
@@ -3760,6 +3807,8 @@ List of blocks for copying.</p>
 <p>Server</p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"cbt_enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"volume_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Data"</span><span class="p">,</span><span class="w">
   </span><span class="nl">"keys"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"field_1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value_1"</span><span class="p">,</span><span class="w"> </span><span class="nl">"field_2"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value_2"</span><span class="w"> </span><span class="p">},</span><span class="w">
   </span><span class="nl">"uri"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"uri_1"</span><span class="p">,</span><span class="w"> </span><span class="s2">"uri_2"</span><span class="w"> </span><span class="p">],</span><span class="w">
   </span><span class="nl">"physical_utilisation"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
@@ -3795,7 +3844,7 @@ List of blocks for copying.</p>
         is always permissable for an implementation to round-up the volume to
         the nearest convenient block size
         """</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s">"key"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"uuid"</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s">"name"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"description"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"read_write"</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">"sharable"</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">"virtual_size"</span><span class="p">:</span> <span class="nb">long</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s">"physical_utilisation"</span><span class="p">:</span> <span class="nb">long</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s">"uri"</span><span class="p">:</span> <span class="p">[</span><span class="s">"string"</span><span class="p">],</span> <span class="s">"keys"</span><span class="p">:</span> <span class="p">{</span><span class="s">"string"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">}}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s">"key"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"uuid"</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s">"name"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"description"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"read_write"</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">"sharable"</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">"virtual_size"</span><span class="p">:</span> <span class="nb">long</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s">"physical_utilisation"</span><span class="p">:</span> <span class="nb">long</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s">"uri"</span><span class="p">:</span> <span class="p">[</span><span class="s">"string"</span><span class="p">],</span> <span class="s">"keys"</span><span class="p">:</span> <span class="p">{</span><span class="s">"string"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">},</span> <span class="s">"volume_type"</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s">"cbt_enabled"</span><span class="p">:</span> <span class="bp">None</span><span class="p">}</span>
     <span class="c1"># ...
 </span></code></pre></div>
 <table><thead>
@@ -3884,6 +3933,8 @@ List of blocks for copying.</p>
 <p>Server</p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"cbt_enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"volume_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Data"</span><span class="p">,</span><span class="w">
   </span><span class="nl">"keys"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"field_1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value_1"</span><span class="p">,</span><span class="w"> </span><span class="nl">"field_2"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value_2"</span><span class="w"> </span><span class="p">},</span><span class="w">
   </span><span class="nl">"uri"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"uri_1"</span><span class="p">,</span><span class="w"> </span><span class="s2">"uri_2"</span><span class="w"> </span><span class="p">],</span><span class="w">
   </span><span class="nl">"physical_utilisation"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
@@ -3923,7 +3974,7 @@ List of blocks for copying.</p>
         can only be taken on the host that has the VDI active (if any).
         XAPI will take care of redirecting the request to the proper host
         """</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s">"key"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"uuid"</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s">"name"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"description"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"read_write"</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">"sharable"</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">"virtual_size"</span><span class="p">:</span> <span class="nb">long</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s">"physical_utilisation"</span><span class="p">:</span> <span class="nb">long</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s">"uri"</span><span class="p">:</span> <span class="p">[</span><span class="s">"string"</span><span class="p">],</span> <span class="s">"keys"</span><span class="p">:</span> <span class="p">{</span><span class="s">"string"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">}}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s">"key"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"uuid"</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s">"name"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"description"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"read_write"</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">"sharable"</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">"virtual_size"</span><span class="p">:</span> <span class="nb">long</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s">"physical_utilisation"</span><span class="p">:</span> <span class="nb">long</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s">"uri"</span><span class="p">:</span> <span class="p">[</span><span class="s">"string"</span><span class="p">],</span> <span class="s">"keys"</span><span class="p">:</span> <span class="p">{</span><span class="s">"string"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">},</span> <span class="s">"volume_type"</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s">"cbt_enabled"</span><span class="p">:</span> <span class="bp">None</span><span class="p">}</span>
     <span class="c1"># ...
 </span></code></pre></div>
 <table><thead>
@@ -3994,6 +4045,8 @@ List of blocks for copying.</p>
 <p>Server</p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"cbt_enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"volume_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Data"</span><span class="p">,</span><span class="w">
   </span><span class="nl">"keys"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"field_1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value_1"</span><span class="p">,</span><span class="w"> </span><span class="nl">"field_2"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value_2"</span><span class="w"> </span><span class="p">},</span><span class="w">
   </span><span class="nl">"uri"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"uri_1"</span><span class="p">,</span><span class="w"> </span><span class="s2">"uri_2"</span><span class="w"> </span><span class="p">],</span><span class="w">
   </span><span class="nl">"physical_utilisation"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
@@ -4028,7 +4081,7 @@ List of blocks for copying.</p>
         [volume] in [sr]. Note the name and description are copied but any
         extra metadata associated by [set] is not copied.
         """</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s">"key"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"uuid"</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s">"name"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"description"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"read_write"</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">"sharable"</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">"virtual_size"</span><span class="p">:</span> <span class="nb">long</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s">"physical_utilisation"</span><span class="p">:</span> <span class="nb">long</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s">"uri"</span><span class="p">:</span> <span class="p">[</span><span class="s">"string"</span><span class="p">],</span> <span class="s">"keys"</span><span class="p">:</span> <span class="p">{</span><span class="s">"string"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">}}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s">"key"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"uuid"</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s">"name"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"description"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"read_write"</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">"sharable"</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">"virtual_size"</span><span class="p">:</span> <span class="nb">long</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s">"physical_utilisation"</span><span class="p">:</span> <span class="nb">long</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s">"uri"</span><span class="p">:</span> <span class="p">[</span><span class="s">"string"</span><span class="p">],</span> <span class="s">"keys"</span><span class="p">:</span> <span class="p">{</span><span class="s">"string"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">},</span> <span class="s">"volume_type"</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s">"cbt_enabled"</span><span class="p">:</span> <span class="bp">None</span><span class="p">}</span>
     <span class="c1"># ...
 </span></code></pre></div>
 <table><thead>
@@ -4101,6 +4154,8 @@ List of blocks for copying.</p>
 <p>Server</p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"cbt_enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"volume_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Data"</span><span class="p">,</span><span class="w">
   </span><span class="nl">"keys"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"field_1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value_1"</span><span class="p">,</span><span class="w"> </span><span class="nl">"field_2"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value_2"</span><span class="w"> </span><span class="p">},</span><span class="w">
   </span><span class="nl">"uri"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"uri_1"</span><span class="p">,</span><span class="w"> </span><span class="s2">"uri_2"</span><span class="w"> </span><span class="p">],</span><span class="w">
   </span><span class="nl">"physical_utilisation"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
@@ -4141,7 +4196,7 @@ List of blocks for copying.</p>
         rejected then the caller will be expected to fall back to performing a
         blockwise copy.
         """</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s">"key"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"uuid"</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s">"name"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"description"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"read_write"</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">"sharable"</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">"virtual_size"</span><span class="p">:</span> <span class="nb">long</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s">"physical_utilisation"</span><span class="p">:</span> <span class="nb">long</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s">"uri"</span><span class="p">:</span> <span class="p">[</span><span class="s">"string"</span><span class="p">],</span> <span class="s">"keys"</span><span class="p">:</span> <span class="p">{</span><span class="s">"string"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">}}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s">"key"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"uuid"</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s">"name"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"description"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"read_write"</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">"sharable"</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">"virtual_size"</span><span class="p">:</span> <span class="nb">long</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s">"physical_utilisation"</span><span class="p">:</span> <span class="nb">long</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s">"uri"</span><span class="p">:</span> <span class="p">[</span><span class="s">"string"</span><span class="p">],</span> <span class="s">"keys"</span><span class="p">:</span> <span class="p">{</span><span class="s">"string"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">},</span> <span class="s">"volume_type"</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s">"cbt_enabled"</span><span class="p">:</span> <span class="bp">None</span><span class="p">}</span>
     <span class="c1"># ...
 </span></code></pre></div>
 <table><thead>
@@ -4782,6 +4837,8 @@ List of blocks for copying.</p>
 <p>Server</p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"cbt_enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"volume_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Data"</span><span class="p">,</span><span class="w">
   </span><span class="nl">"keys"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"field_1"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value_1"</span><span class="p">,</span><span class="w"> </span><span class="nl">"field_2"</span><span class="p">:</span><span class="w"> </span><span class="s2">"value_2"</span><span class="w"> </span><span class="p">},</span><span class="w">
   </span><span class="nl">"uri"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"uri_1"</span><span class="p">,</span><span class="w"> </span><span class="s2">"uri_2"</span><span class="w"> </span><span class="p">],</span><span class="w">
   </span><span class="nl">"physical_utilisation"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
@@ -4814,7 +4871,7 @@ List of blocks for copying.</p>
         <span class="s">"""
         [stat sr volume] returns metadata associated with [volume].
         """</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s">"key"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"uuid"</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s">"name"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"description"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"read_write"</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">"sharable"</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">"virtual_size"</span><span class="p">:</span> <span class="nb">long</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s">"physical_utilisation"</span><span class="p">:</span> <span class="nb">long</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s">"uri"</span><span class="p">:</span> <span class="p">[</span><span class="s">"string"</span><span class="p">],</span> <span class="s">"keys"</span><span class="p">:</span> <span class="p">{</span><span class="s">"string"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">}}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s">"key"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"uuid"</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s">"name"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"description"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">,</span> <span class="s">"read_write"</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">"sharable"</span><span class="p">:</span> <span class="bp">True</span><span class="p">,</span> <span class="s">"virtual_size"</span><span class="p">:</span> <span class="nb">long</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s">"physical_utilisation"</span><span class="p">:</span> <span class="nb">long</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="s">"uri"</span><span class="p">:</span> <span class="p">[</span><span class="s">"string"</span><span class="p">],</span> <span class="s">"keys"</span><span class="p">:</span> <span class="p">{</span><span class="s">"string"</span><span class="p">:</span> <span class="s">"string"</span><span class="p">},</span> <span class="s">"volume_type"</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span> <span class="s">"cbt_enabled"</span><span class="p">:</span> <span class="bp">None</span><span class="p">}</span>
     <span class="c1"># ...
 </span></code></pre></div>
 <table><thead>
@@ -5620,7 +5677,38 @@ List of blocks for copying.</p>
 </span></code></pre></div>
 <p>type <code>id</code> = <code>string</code>
 Unique identifier for a task.</p>
+<h3 id='task-type-definitions-volume_type'>volume_type</h3><div class="highlight"><pre class="highlight json tab-json"><code><span class="s2">"Data"</span><span class="w">
+</span><span class="s2">"CBT_Metadata"</span><span class="w">
+</span><span class="s2">"Data_and_CBT_Metadata"</span><span class="w">
+</span></code></pre></div>
+<p>type <code>volume_type</code> = <code>variant { ... }</code></p>
+<h4 id='task-type-definitions-volume_type-constructors'>Constructors</h4>
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Data</td>
+<td>unit</td>
+<td>Normal data volume</td>
+</tr>
+<tr>
+<td>CBT_Metadata</td>
+<td>unit</td>
+<td>CBT Metadata only, data destroyed</td>
+</tr>
+<tr>
+<td>Data_and_CBT_Metadata</td>
+<td>unit</td>
+<td>Both Data and CBT Metadata</td>
+</tr>
+</tbody></table>
 <h3 id='task-type-definitions-volume'>volume</h3><div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"cbt_enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"volume_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Data"</span><span class="p">,</span><span class="w">
   </span><span class="nl">"keys"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"keys"</span><span class="p">:</span><span class="w"> </span><span class="s2">"keys"</span><span class="w"> </span><span class="p">},</span><span class="w">
   </span><span class="nl">"uri"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"uri"</span><span class="w"> </span><span class="p">],</span><span class="w">
   </span><span class="nl">"physical_utilisation"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
@@ -5692,11 +5780,23 @@ Unique identifier for a task.</p>
 <td>(string * string) list</td>
 <td>A list of key=value pairs which have been stored in the Volume metadata. These should not be interpreted by the Volume plugin.</td>
 </tr>
+<tr>
+<td>volume_type</td>
+<td>volume_type option</td>
+<td>The content type of this volume</td>
+</tr>
+<tr>
+<td>cbt_enabled</td>
+<td>bool option</td>
+<td>True means that the storage datapath will track changed dirty blocks while writing and will be able to provide CBT Metadata when requested</td>
+</tr>
 </tbody></table>
 <h3 id='task-type-definitions-async_result_t'>async_result_t</h3><div class="highlight"><pre class="highlight json tab-json"><code><span class="s2">"UnitResult"</span><span class="w">
 </span><span class="p">[</span><span class="w">
   </span><span class="s2">"Volume"</span><span class="p">,</span><span class="w">
   </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"cbt_enabled"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"volume_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Data"</span><span class="p">,</span><span class="w">
     </span><span class="nl">"keys"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"keys"</span><span class="p">:</span><span class="w"> </span><span class="s2">"keys"</span><span class="w"> </span><span class="p">},</span><span class="w">
     </span><span class="nl">"uri"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">"uri"</span><span class="w"> </span><span class="p">],</span><span class="w">
     </span><span class="nl">"physical_utilisation"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
