@@ -2550,6 +2550,8 @@ disk will be a perfect mirror of the source.</p></li>
 Plugin-specific configuration which describes where and how to locate the storage repository. This may include the physical block device name, a remote NFS server and path or an RBD storage pool.</p>
 <h3 id='volume-type-definitions-health'>health</h3><div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w"> </span><span class="s2">"Healthy"</span><span class="p">,</span><span class="w"> </span><span class="s2">"health"</span><span class="w"> </span><span class="p">]</span><span class="w">
 </span><span class="p">[</span><span class="w"> </span><span class="s2">"Recovering"</span><span class="p">,</span><span class="w"> </span><span class="s2">"health"</span><span class="w"> </span><span class="p">]</span><span class="w">
+</span><span class="p">[</span><span class="w"> </span><span class="s2">"Unreachable"</span><span class="p">,</span><span class="w"> </span><span class="s2">"health"</span><span class="w"> </span><span class="p">]</span><span class="w">
+</span><span class="p">[</span><span class="w"> </span><span class="s2">"Unavailable"</span><span class="p">,</span><span class="w"> </span><span class="s2">"health"</span><span class="w"> </span><span class="p">]</span><span class="w">
 </span></code></pre></div>
 <p>type <code>health</code> = <code>variant { ... }</code></p>
 <h4 id='volume-type-definitions-health-constructors'>Constructors</h4>
@@ -2569,6 +2571,16 @@ Plugin-specific configuration which describes where and how to locate the storag
 <td>Recovering</td>
 <td>string</td>
 <td>Storage is busy recovering, e.g. rebuilding mirrors</td>
+</tr>
+<tr>
+<td>Unreachable</td>
+<td>string</td>
+<td>Storage is unreachable but may be recoverable with admin intervention</td>
+</tr>
+<tr>
+<td>Unavailable</td>
+<td>string</td>
+<td>Storage is unavailable, a host reboot will be required</td>
 </tr>
 </tbody></table>
 <h3 id='volume-type-definitions-sr_stat'>sr_stat</h3><div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
