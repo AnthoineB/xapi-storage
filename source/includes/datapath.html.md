@@ -112,6 +112,12 @@ A description of which Xen block backend to use. The toolstack needs this to set
  Name            | Type                | Description                            
 -----------------|---------------------|----------------------------------------
  implementations | implementation list | Choice of implementation technologies. 
+### sock_path
+```json
+"sock_path"
+```
+type `sock_path` = `string`
+Path to a UNIX domain socket
 ### uri
 ```json
 "uri"
@@ -510,6 +516,86 @@ class Datapath_myimplementation(Datapath_skeleton):
  dbg    | in        | string | Debug context from the caller                              
  uri    | in        | uri    | A URI which represents how to access the volume disk data. 
  domain | in        | domain | An opaque string which represents the Xen domain.          
+## Method: `import_activate`
+\[import\_activate uri domain\] prepares a connection to the   storage named by \[uri\] for use by inbound import mirroring,  the \[domain\] parameter identifies which domain to connect to,  most likely 0 or a custom storage domain. The return value is a  path to a UNIX domain socket to which an open file descriptor  may be passed, by SCM\_RIGHTS. This, in turn, will become  the server end of a Network Block Device \(NBD\) connection  using, new-fixed protocol. Implementations shall declare the  VDI\_MIRROR\_IN feature for this method to be supported. It is  expected that activate will have been previously called so that  there is an active datapath.
+
+> Client
+
+```json
+{
+  "method": "Datapath.import_activate",
+  "params": [ { "domain": "domain", "uri": "uri", "dbg": "dbg" } ],
+  "id": 35
+}
+```
+
+```ocaml
+try
+    let sock_path = Client.import_activate dbg uri domain in
+    ...
+with Exn (Unimplemented str) -> ...
+
+```
+
+```python
+
+# import necessary libraries if needed
+# we assume that your library providing the client is called myclient and it provides a connect method
+import myclient
+
+if __name__ == "__main__":
+    c = myclient.connect()
+    results = c.Datapath.import_activate({ dbg: "string", uri: "string", domain: "string" })
+    print(repr(results))
+```
+
+> Server
+
+```json
+"sock_path"
+```
+
+```ocaml
+try
+    let sock_path = Client.import_activate dbg uri domain in
+    ...
+with Exn (Unimplemented str) -> ...
+
+```
+
+```python
+
+# import additional libraries if needed
+
+class Datapath_myimplementation(Datapath_skeleton):
+    # by default each method will return a Not_implemented error
+    # ...
+
+    def import_activate(self, dbg, uri, domain):
+        """
+        [import_activate uri domain] prepares a connection to the
+        storage named by [uri] for use by inbound import mirroring,
+        the [domain] parameter identifies which domain to connect to,
+        most likely 0 or a custom storage domain. The return value is a
+        path to a UNIX domain socket to which an open file descriptor
+        may be passed, by SCM_RIGHTS. This, in turn, will become
+        the server end of a Network Block Device (NBD) connection
+        using, new-fixed protocol. Implementations shall declare the
+        VDI_MIRROR_IN feature for this method to be supported. It is
+        expected that activate will have been previously called so that
+        there is an active datapath.
+        """
+        return "string"
+    # ...
+```
+
+
+ Name      | Direction | Type      | Description                                                
+-----------|-----------|-----------|------------------------------------------------------------
+ dbg       | in        | string    | Debug context from the caller                              
+ uri       | in        | uri       | A URI which represents how to access the volume disk data. 
+ domain    | in        | domain    | An opaque string which represents the Xen domain.          
+ sock_path | out       | sock_path | A path to a UNIX domain socket in the filesystem.          
 ## Method: `deactivate`
 \[deactivate uri domain\] is called as soon as a VM has finished reading or writing its disk. This is an opportunity for an implementation which needs to perform an explicit volume handover to do it. This function is called in the migration downtime window so delays here will be noticeable to users and should be minimised. This function is idempotent.
 
@@ -519,7 +605,7 @@ class Datapath_myimplementation(Datapath_skeleton):
 {
   "method": "Datapath.deactivate",
   "params": [ { "domain": "domain", "uri": "uri", "dbg": "dbg" } ],
-  "id": 35
+  "id": 36
 }
 ```
 
@@ -591,7 +677,7 @@ class Datapath_myimplementation(Datapath_skeleton):
 {
   "method": "Datapath.detach",
   "params": [ { "domain": "domain", "uri": "uri", "dbg": "dbg" } ],
-  "id": 36
+  "id": 37
 }
 ```
 
@@ -666,7 +752,7 @@ class Datapath_myimplementation(Datapath_skeleton):
 {
   "method": "Datapath.close",
   "params": [ { "uri": "uri", "dbg": "dbg" } ],
-  "id": 37
+  "id": 38
 }
 ```
 
@@ -783,7 +869,7 @@ To mirror a VDI a sequence of these API calls is required:
       "dbg": "dbg"
     }
   ],
-  "id": 38
+  "id": 39
 }
 ```
 
@@ -863,7 +949,7 @@ class Data_myimplementation(Data_skeleton):
   "params": [
     { "remote": "remote", "domain": "domain", "uri": "uri", "dbg": "dbg" }
   ],
-  "id": 39
+  "id": 40
 }
 ```
 
@@ -938,7 +1024,7 @@ class Data_myimplementation(Data_skeleton):
   "params": [
     { "operation": [ "Copy", [ "Copy_1", "Copy_2" ] ], "dbg": "dbg" }
   ],
-  "id": 40
+  "id": 41
 }
 ```
 
@@ -1010,7 +1096,7 @@ class Data_myimplementation(Data_skeleton):
   "params": [
     { "operation": [ "Copy", [ "Copy_1", "Copy_2" ] ], "dbg": "dbg" }
   ],
-  "id": 41
+  "id": 42
 }
 ```
 
@@ -1080,7 +1166,7 @@ class Data_myimplementation(Data_skeleton):
   "params": [
     { "operation": [ "Copy", [ "Copy_1", "Copy_2" ] ], "dbg": "dbg" }
   ],
-  "id": 42
+  "id": 43
 }
 ```
 
@@ -1146,7 +1232,7 @@ class Data_myimplementation(Data_skeleton):
 > Client
 
 ```json
-{ "method": "Data.ls", "params": [ { "dbg": "dbg" } ], "id": 43 }
+{ "method": "Data.ls", "params": [ { "dbg": "dbg" } ], "id": 44 }
 ```
 
 ```ocaml
